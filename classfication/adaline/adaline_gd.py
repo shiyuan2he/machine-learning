@@ -14,33 +14,7 @@ class AdalineGD(object):
         self.eta = eta
         self.n_iter = n_iter
 
-    def net_input(self, x):
-        """
-        计算净输入
-        :param x: list[np.array] 一维数组数据集
-        :return: 计算向量的点积
-            向量点积的概念：
-                {1，2，3} * {4，5，6} = 1*4+2*5+3*6 = 32
 
-        description:
-            sum(i*j for i, j in zip(x, self.w_[1:])) python计算点积
-        """
-        # print(x, end=" ")
-        # print(self.w_[:], end=" ")
-        x_dot = np.dot(x, self.w_[1:]) + self.w_[0]
-        print("的点积是：%d" % x_dot, end="  ")
-        return x_dot
-
-    """ 计算类标 """
-    def predict(self, x):
-        """
-        预测方法
-        :param x: list[np.array] 一维数组数据集
-        :return:
-        """
-        target_pred = np.where(self.net_input(x) >= 0.0, 1, -1)
-        print("预测值：%d" % target_pred, end="; ")
-        return target_pred
 
     def fit(self, x, y):
         """
@@ -54,18 +28,48 @@ class AdalineGD(object):
           np.zeros(count) 将指定数量count初始化成元素均为0的数组 self.w_ = [ 0.  0.  0.]
         """
         # 按照python开发惯例，对于那些并非在初始化对象时创建但是又被对象中其他方法调用的属性，可以在后面添加一个下划线
+        print(x.shape[1])
         self.w_ = np.zeros(1 + x.shape[1])
-        # 收集每轮迭代过程中错误分类样本的数量，以便后续对感知器在训练中表现的好坏做出判定
-        self.errors_ = []
+        # 存储代价函数的输出值以检查本轮训练后算法是否收敛
+        self.cost_ = []
 
-        for _ in range(self.n_iter):
-            errors = 0
+        for i in range(self.n_iter):
             for x_element, target in zip(x, y):
-                # 如果预测值（self.predict(x_element)）和实际值(target)一致，则update为0
-                update = self.eta * (target - self.predict(x_element))
-                print("真实值：%d" % target)
-                self.w_[1:] += update * x_element
-                self.w_[0] += update
-                errors += int(update != 0.0)
-            self.errors_.append(errors)
+                output = self.net_input(x)
+                errors = (y - output)
+                # 计算第0个位置的权重
+                self.w_[0] += self.eta * errors.sum()
+                # 计算1到m位置的权重 X.T.dot(errors) 计算特征矩阵与误差向量之间的乘积
+                self.w_[1:] += self.eta * x.T.dot(errors)
+                cost = (errors**2).sum() / 2.0
+            self.cost_.append(cost)
         return self
+
+    def net_input(self, x):
+        """
+        计算净输入
+        :parameter
+        ----------
+        :param x: list[np.array] 一维数组数据集
+        :return: 计算向量的点积
+            向量点积的概念：
+                {1，2，3} * {4，5，6} = 1*4+2*5+3*6 = 32
+
+        description:
+            sum(i*j for i, j in zip(x, self.w_[1:])) python计算点积
+        """
+        return np.dot(x, self.w_[1:]) + self.w_[0]
+
+    def activation(self, x):
+        return self.net_input(x)
+
+    """ 计算类标 """
+    def predict(self, x):
+        """
+        预测方法
+        :param x: list[np.array] 一维数组数据集
+        :return:
+        """
+        target_pred = np.where(self.net_input(x) >= 0.0, 1, -1)
+        print("预测值：%d" % target_pred, end="; ")
+        return target_pred
