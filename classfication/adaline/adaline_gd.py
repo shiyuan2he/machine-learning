@@ -31,18 +31,18 @@ class AdalineGD(object):
         print(x.shape[1])
         self.w_ = np.zeros(1 + x.shape[1])
         # 存储代价函数的输出值以检查本轮训练后算法是否收敛
-        self.cost_ = []
+        self.cost = []
 
         for i in range(self.n_iter):
             for x_element, target in zip(x, y):
-                output = self.net_input(x)
+                output = self.net_input(x_element)
                 errors = (y - output)
                 # 计算第0个位置的权重
                 self.w_[0] += self.eta * errors.sum()
                 # 计算1到m位置的权重 X.T.dot(errors) 计算特征矩阵与误差向量之间的乘积
                 self.w_[1:] += self.eta * x.T.dot(errors)
                 cost = (errors**2).sum() / 2.0
-            self.cost_.append(cost)
+            self.cost.append(cost)
         return self
 
     def net_input(self, x):

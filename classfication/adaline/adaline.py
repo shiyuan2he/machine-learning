@@ -19,13 +19,14 @@ class Adaline:
         fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(8, 4))
         ada1 = AdalineGD(n_iter=10, eta=0.01, ).fit(x, y)
 
-        ax[0].plot(range(1, len(ada1.cost_), marker="o"))
+        print(len(ada1.cost))
+        ax[0].plot(range(1, len(ada1.cost), marker="o"))
         ax[0].set_xlabel("x")
         ax[0].set_ylabel("y")
         ax[0].set_title("0.01")
 
         ada2 = AdalineGD(n_iter=10, eta=0.001, ).fit(x, y)
-        ax[1].plot(range(1, len(ada2.cost_), marker="x"))
+        ax[1].plot(range(1, len(ada2.cost), marker="x"))
         ax[1].set_xlabel("x")
         ax[1].set_ylabel("y")
         ax[1].set_title("0.001")
