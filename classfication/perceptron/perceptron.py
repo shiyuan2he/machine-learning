@@ -26,8 +26,8 @@ class Perceptron(object):
         description:
             sum(i*j for i, j in zip(x, self.w_[1:])) python计算点积
         """
-        # print(x, end=" ")
-        # print(self.w_[:], end=" ")
+        print(x, end=" ")
+        print(self.w_[:], end=" ")
         x_dot = np.dot(x, self.w_[1:]) + self.w_[0]
         print("的点积是：%d" % x_dot, end="  ")
         return x_dot
@@ -54,7 +54,10 @@ class Perceptron(object):
 
           np.zeros(count) 将指定数量count初始化成元素均为0的数组 self.w_ = [ 0.  0.  0.]
         """
-        # 按照python开发惯例，对于那些并非在初始化对象时创建但是又被对象中其他方法调用的属性，可以在后面添加一个下划线
+
+        """
+        按照python开发惯例，对于那些并非在初始化对象时创建但是又被对象中其他方法调用的属性，可以在后面添加一个下划线
+        """
         self.w_ = np.zeros(1 + x.shape[1])
         # 收集每轮迭代过程中错误分类样本的数量，以便后续对感知器在训练中表现的好坏做出判定
         self.errors_ = []
