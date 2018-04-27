@@ -15,10 +15,10 @@ class Perceptron(object):
         self.eta = eta
         self.n_iter = n_iter
 
-    def net_input(self, x):
+    def net_input(self, xi):
         """
         计算净输入
-        :param x: list[np.array] 一维数组数据集
+        :param xi: list[np.array] 一维数组数据集
         :return: 计算向量的点积
             向量点积的概念：
                 {1，2，3} * {4，5，6} = 1*4+2*5+3*6 = 32
@@ -26,20 +26,20 @@ class Perceptron(object):
         description:
             sum(i*j for i, j in zip(x, self.w_[1:])) python计算点积
         """
-        print(x, end=" ")
+        print(xi, end=" ")
         print(self.w_[:], end=" ")
-        x_dot = np.dot(x, self.w_[1:]) + self.w_[0]
+        x_dot = np.dot(xi, self.w_[1:]) + self.w_[0]
         print("的点积是：%d" % x_dot, end="  ")
         return x_dot
 
     """ 计算类标 """
-    def predict(self, x):
+    def predict(self, xi):
         """
         预测方法
-        :param x: list[np.array] 一维数组数据集
+        :param xi: list[np.array] 一维数组数据集
         :return:
         """
-        target_pred = np.where(self.net_input(x) >= 0.0, 1, -1)
+        target_pred = np.where(self.net_input(xi) >= 0.0, 1, -1)
         print("预测值：%d" % target_pred, end="; ")
         return target_pred
 
@@ -56,16 +56,22 @@ class Perceptron(object):
         """
 
         """
-        按照python开发惯例，对于那些并非在初始化对象时创建但是又被对象中其他方法调用的属性，可以在后面添加一个下划线
+        按照python开发惯例，对于那些并非在初始化对象时创建但是又被对象中其他方法调用的属性，可以在后面添加一个下划线.
+        将权值初始化为一个零向量，x.shape[1] 是特征的维度数量，如鸢尾花数据 (150, 5)  self.w_ = [0,0,0,0,0,0]
+        w_[0]是初始权重值0  w_[1:] 每次更新的权重值 
         """
         self.w_ = np.zeros(1 + x.shape[1])
+        print(self.w_)
         # 收集每轮迭代过程中错误分类样本的数量，以便后续对感知器在训练中表现的好坏做出判定
         self.errors_ = []
 
         for _ in range(self.n_iter):
             errors = 0
+            """
+            迭代所有样本，并根据感知器规则来更新权重
+           """
             for x_element, target in zip(x, y):
-                # 如果预测值（self.predict(x_element)）和实际值(target)一致，则update为0
+                """ 如果预测值（self.predict(x_element)）和实际值(target)一致，则update为0 """
                 update = self.eta * (target - self.predict(x_element))
                 print("真实值：%d" % target)
                 self.w_[1:] += update * x_element

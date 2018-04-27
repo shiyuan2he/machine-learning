@@ -6,8 +6,8 @@ import numpy as np
 
 df = pd.read_csv("https://archive.ics.uci.edu/ml/machine-learning-databases/iris/iris.data", header=None)
 # 输出最后20行的数据，并观察数据结构 萼片长度（sepal length），萼片宽度()，花瓣长度（petal length），花瓣宽度，种类
-print(df.tail(n=20))
-
+# print(df.tail(n=20))
+print(df.shape)
 # 0到100行，第5列
 y = df.iloc[0:100, 4].values
 # 将target值转数字化 Iris-setosa为-1，否则值为1
