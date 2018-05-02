@@ -1,18 +1,24 @@
 import numpy as np
 
-class Adaline(object):
+class AdalineSGD(object):
     """
-    AdalineGD: 自适应线性神经网络-单层神经网络
+    AdalineSGD: 自适应线性神经网络-单层神经网络
     """
 
-    def __init__(self, eta=0.01, n_iter=50):
+    def __init__(self, eta=0.01, n_iter=50, shuffle=True, random_state=None):
         """
         初始化感知器对象
         :param eta: float 学习速率
         :param n_iter: int 在训练集进行迭代的次数
+        :param shuffle:
+        :param random_state:
         """
         self.eta = eta
         self.n_iter = n_iter
+        self.shuffle = shuffle
+        self.w_initialized = False
+        if random_state:
+            None
 
     def fit(self, x, y):
         """

@@ -21,19 +21,18 @@ class AdalineRunner:
         # 取出0到100行，第1，第三列的值
         x = df.iloc[0:100, [0, 2]].values
         fig, ax = plt.subplots(nrows=1, ncols=2, figsize=(8, 4))
-        ada1 = Adaline(n_iter=10, eta=0.01).fit(x, y)
 
-        print(len(ada1.cost_))
-        ax[0].plot(range(1, len(ada1.cost_) + 1), marker="o")
+        ada1 = Adaline(n_iter=10, eta=0.01).fit(x, y)
+        ax[0].plot(range(1, len(ada1.cost_) + 1), ada1.cost_, marker="o")
         ax[0].set_xlabel("x")
         ax[0].set_ylabel("y")
         ax[0].set_title("0.01")
 
-        ada2 = Adaline(n_iter=10, eta=0.001).fit(x, y)
-        ax[1].plot(range(1, len(ada2.cost_) + 1), marker="x")
+        ada2 = Adaline(n_iter=10, eta=0.0001).fit(x, y)
+        ax[1].plot(range(1, len(ada2.cost_) + 1), ada2.cost_, marker="x")
         ax[1].set_xlabel("x")
         ax[1].set_ylabel("y")
-        ax[1].set_title("0.001")
+        ax[1].set_title("0.0001")
 
         plt.show()
 
