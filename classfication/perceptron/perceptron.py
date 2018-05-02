@@ -10,7 +10,7 @@ class Perceptron(object):
         """
         初始化感知器对象
         :param eta: float 学习速率
-        :param n_iter: int 在训练集进行迭代的次数
+        :param n_iter: int 在训练集进行迭代的次数，同样的数据训练n_iter轮
         """
         self.eta = eta
         self.n_iter = n_iter
@@ -26,10 +26,10 @@ class Perceptron(object):
         description:
             sum(i*j for i, j in zip(x, self.w_[1:])) python计算点积
         """
-        print(xi, end=" ")
-        print(self.w_[:], end=" ")
+        # print(xi, end=" ")
+        # print(self.w_[:], end=" ")
         x_dot = np.dot(xi, self.w_[1:]) + self.w_[0]
-        print("的点积是：%d" % x_dot, end="  ")
+        # print("的点积是：%d" % x_dot, end="  ")
         return x_dot
 
     """ 计算类标 """
@@ -40,7 +40,7 @@ class Perceptron(object):
         :return:
         """
         target_pred = np.where(self.net_input(xi) >= 0.0, 1, -1)
-        print("预测值：%d" % target_pred, end="; ")
+        # print("预测值：%d" % target_pred, end="; ")
         return target_pred
 
     def fit(self, x, y):
@@ -61,7 +61,7 @@ class Perceptron(object):
         w_[0]是初始权重值0  w_[1:] 每次更新的权重值 
         """
         self.w_ = np.zeros(1 + x.shape[1])
-        print(self.w_)
+        # print(self.w_)
         # 收集每轮迭代过程中错误分类样本的数量，以便后续对感知器在训练中表现的好坏做出判定
         self.errors_ = []
 
@@ -73,7 +73,7 @@ class Perceptron(object):
             for x_element, target in zip(x, y):
                 """ 如果预测值（self.predict(x_element)）和实际值(target)一致，则update为0 """
                 update = self.eta * (target - self.predict(x_element))
-                print("真实值：%d" % target)
+                # print("真实值：%d" % target)
                 self.w_[1:] += update * x_element
                 self.w_[0] += update
                 errors += int(update != 0.0)
